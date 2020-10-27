@@ -6,6 +6,8 @@ using System.Reflection;
 using System.IO.Ports;
 using System.Runtime.InteropServices;
 
+
+
 namespace PITempCS
 {
 
@@ -14,15 +16,14 @@ namespace PITempCS
     {
         [DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileStringW", CharSet = CharSet.Unicode, SetLastError = true)]
         static extern uint GetPrivateProfileString(string lpAppName, string lpKeyName, string lpDefault, StringBuilder lpReturnedString, uint nSize, string lpFileName);
-
+        
         private static SerialPort myPort = null;
         private static StringBuilder COMnumber;
         private static float num;
 
         static internal void Load()
         {
-
-            openini();
+            Openini();
             openPort();
 
             if (myPort != null)
@@ -55,7 +56,8 @@ namespace PITempCS
         }
         static unsafe internal void Elapse(State st, int* Pa, int* Sa)
         {
-            num = 10;
+            num = State.V;
+            //numに速度情報を入れたいけど入らない
             if (myPort == null)
             {
                 return;
@@ -118,21 +120,23 @@ namespace PITempCS
 
         }
 
-        static internal void openini()
+        static internal void Openini()
         {
             int capacitySize = 256;
 
             COMnumber = new StringBuilder(capacitySize);
-            uint ret = GetPrivateProfileString("Data", "COM", "none", COMnumber, Convert.ToUInt32(COMnumber.Capacity), "ATSPISerial.ini");
-            //何故かiniを読んでくれない
+            uint ret = GetPrivateProfileString("Data", "Name", "none", COMnumber, Convert.ToUInt32(COMnumber.Capacity), AppDomain.CurrentDomain.BaseDirectory + "ATSPISerial.ini");
+            //iniを読んでくれない
+            //XMLの方が楽らしい。さっぱりわからなかったけど。
         }
 
         static internal void openPort()
         {
             try
             {
-                //myPort = new SerialPort("COM" + COMnumber, 19200, Parity.None, 8, StopBits.One);
+                // myPort = new SerialPort("COM" + COMnumber.ToString(), 19200, Parity.None, 8, StopBits.One);
                 myPort = new SerialPort("COM6", 19200, Parity.None, 8, StopBits.One);
+                //とりあえず固定値入れている
                 myPort.Open();
                 myPort.RtsEnable = true;
                 myPort.DtrEnable = true;
