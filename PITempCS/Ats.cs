@@ -25,8 +25,7 @@ namespace PITempCS
     /// <summary>列車位置[m]</summary>
     public double Z;
     /// <summary>列車速度[km/h]</summary>
-    public static float V;
-   //public static floatにしていいの？
+    public float V;
     /// <summary>0時からの経過時間[ms]</summary>
     public int T;
     /// <summary>BC圧力[kPa]</summary>

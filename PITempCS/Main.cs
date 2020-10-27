@@ -7,7 +7,6 @@ using System.IO.Ports;
 using System.Runtime.InteropServices;
 
 
-
 namespace PITempCS
 {
 
@@ -16,15 +15,15 @@ namespace PITempCS
     {
         [DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileStringW", CharSet = CharSet.Unicode, SetLastError = true)]
         static extern uint GetPrivateProfileString(string lpAppName, string lpKeyName, string lpDefault, StringBuilder lpReturnedString, uint nSize, string lpFileName);
-        
+
+
         private static SerialPort myPort = null;
         private static StringBuilder COMnumber;
-        private static float num;
 
         static internal void Load()
         {
             Openini();
-            openPort();
+            OpenPort();
 
             if (myPort != null)
             {
@@ -41,7 +40,7 @@ namespace PITempCS
 
         static internal void Dispose()
         {
-            closePort();
+            ClosePort();
 
         }
 
@@ -56,15 +55,17 @@ namespace PITempCS
         }
         static unsafe internal void Elapse(State st, int* Pa, int* Sa)
         {
-            num = State.V;
-            //numに速度情報を入れたいけど入らない
+            int spd = (int)st.V;
+            int am = (int)st.I;
             if (myPort == null)
             {
                 return;
             }
             try
             {
-                String data = num.ToString() + '\n';
+                String data1 = "aa" + spd.ToString() + '\n';
+                String data2 = "bb" + am.ToString() + '\n';
+                String data = data1 + data2;
                 //! シリアルポートからテキストを送信する.
                 myPort.Write(data);
                 
@@ -122,19 +123,25 @@ namespace PITempCS
 
         static internal void Openini()
         {
+
             int capacitySize = 256;
 
             COMnumber = new StringBuilder(capacitySize);
-            uint ret = GetPrivateProfileString("Data", "Name", "none", COMnumber, Convert.ToUInt32(COMnumber.Capacity), AppDomain.CurrentDomain.BaseDirectory + "ATSPISerial.ini");
-            //iniを読んでくれない
-            //XMLの方が楽らしい。さっぱりわからなかったけど。
+            uint ret = GetPrivateProfileString("Data", "COM", "none", COMnumber, Convert.ToUInt32(COMnumber.Capacity), "ATSPISerial.ini");
+
+            //これだとiniの中身を読んでもらえません
+            //設定データを読むやつ、初心者にはどの方法もよく分からなかった
+            //読んでます
+            //https://www.ipentec.com/document/csharp-read-ini-file-value
+            //https://qiita.com/caf2for4/items/3078375bb8e79a5771b4
+
         }
 
-        static internal void openPort()
+        static internal void OpenPort()
         {
             try
             {
-                // myPort = new SerialPort("COM" + COMnumber.ToString(), 19200, Parity.None, 8, StopBits.One);
+                //myPort = new SerialPort("COM" + COMnumber.ToString(), 19200, Parity.None, 8, StopBits.One);
                 myPort = new SerialPort("COM6", 19200, Parity.None, 8, StopBits.One);
                 //とりあえず固定値入れている
                 myPort.Open();
@@ -144,11 +151,11 @@ namespace PITempCS
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                closePort();
+                ClosePort();
             }
         }
 
-        static internal void closePort()
+        static internal void ClosePort()
         {
             if (myPort != null)
             {
