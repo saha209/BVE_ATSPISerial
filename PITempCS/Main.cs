@@ -55,14 +55,14 @@ namespace PITempCS
         }
         static unsafe internal void Elapse(State st, int* Pa, int* Sa)
         {
-            num = State.V;
+            num = 10;
             if (myPort == null)
             {
                 return;
             }
             try
             {
-                String data = num.ToString();
+                String data = num.ToString() + '\n';
                 //! シリアルポートからテキストを送信する.
                 myPort.Write(data);
                 
@@ -123,15 +123,19 @@ namespace PITempCS
             int capacitySize = 256;
 
             COMnumber = new StringBuilder(capacitySize);
-            uint ret = GetPrivateProfileString("Data", "COM", "none", COMnumber, Convert.ToUInt32(COMnumber.Capacity), AppDomain.CurrentDomain.BaseDirectory + "ATSPISerial.ini");
+            uint ret = GetPrivateProfileString("Data", "COM", "none", COMnumber, Convert.ToUInt32(COMnumber.Capacity), "ATSPISerial.ini");
+            //何故かiniを読んでくれない
         }
 
         static internal void openPort()
         {
             try
             {
-                myPort = new SerialPort("COM" + COMnumber.ToString(), 19200, Parity.None, 8, StopBits.One);
+                //myPort = new SerialPort("COM" + COMnumber, 19200, Parity.None, 8, StopBits.One);
+                myPort = new SerialPort("COM6", 19200, Parity.None, 8, StopBits.One);
                 myPort.Open();
+                myPort.RtsEnable = true;
+                myPort.DtrEnable = true;
             }
             catch (Exception ex)
             {
