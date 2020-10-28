@@ -2,26 +2,28 @@ char input[5];   // 文字列格納用
 int i = 0;  // 文字数のカウンタ
 int speed;
 
-void setup(){
-    pinMode(A0, OUTPUT); // 10番ピンを出力に使用
-    Serial.begin(19200);
+void setup() {
+  pinMode(PB10, OUTPUT); // 10番ピンを出力に使用
+  Serial.begin(19200);
 }
 
 void loop() {
-   if (Serial.available()) {
-      input[i] = Serial.read();
+  if (Serial.available()) {
+    input[i] = Serial.read();
 
-      if (input[0] == 'a') {
+    if (input[0] == 'a') {
       if (input[i] == '\n') {
-          if (i==5) speed = (input[2]-48)*100 + (input[3]-48)*10 + (input[4]-48);
-          if (i==4) speed = (input[2]-48)*10 + (input[3]-48);
-          if (i==3) speed = (input[2]-48);
-          Serial.print(speed);
-          analogWrite(A0, speed);
-          i = 0;
+        if (i == 5) speed = (input[2] - 48) * 100 + (input[3] - 48) * 10 + (input[4] - 48);
+        if (i == 4) speed = (input[2] - 48) * 10 + (input[3] - 48);
+        if (i == 3) speed = (input[2] - 48);
+        Serial.print(speed);
+        analogWrite(PB10, speed);
+        i = 0;
       }
-      else { i++; }
-  }
+      else {
+        i++;
+      }
+    }
   }
 }
 

@@ -55,7 +55,14 @@ namespace PITempCS
         }
         static unsafe internal void Elapse(State st, int* Pa, int* Sa)
         {
+            int z = (int)st.Z;
             int spd = (int)st.V;
+            int t = st.T;
+            int bc = (int)st.BC;
+            int mr = (int)st.MR;
+            int er = (int)st.ER;
+            int bp = (int)st.BP;
+            int sap = (int)st.SAP;
             int am = (int)st.I;
             if (myPort == null)
             {
@@ -63,9 +70,19 @@ namespace PITempCS
             }
             try
             {
-                String data1 = "aa" + spd.ToString() + '\n';
-                String data2 = "bb" + am.ToString() + '\n';
-                String data = data1 + data2;
+                String data;
+                String data1 = "aa" + z.ToString() + '\n';
+                String data2 = "ab" + spd.ToString() + '\n';
+                String data3 = "ac" + t.ToString() + '\n';
+                String data4 = "ad" + bc.ToString() + '\n';
+                String data5 = "ae" + mr.ToString() + '\n';
+                String data6 = "af" + er.ToString() + '\n';
+                String data7 = "ag" + bp.ToString() + '\n';
+                String data8 = "ah" + sap.ToString() + '\n';
+                String data9 = "ai" + am.ToString() + '\n';
+                data = data1 + data2 + data3 + data4 + data5 + data6 + data7+ data8 + data9;
+                //これ重たいからどうにかしないといけない
+
                 //! シリアルポートからテキストを送信する.
                 myPort.Write(data);
                 
@@ -127,7 +144,8 @@ namespace PITempCS
             int capacitySize = 256;
 
             COMnumber = new StringBuilder(capacitySize);
-            uint ret = GetPrivateProfileString("Data", "COM", "none", COMnumber, Convert.ToUInt32(COMnumber.Capacity), "ATSPISerial.ini");
+            string iniFileName = AppDomain.CurrentDomain.BaseDirectory + "ATSPISerial.ini";
+            uint ret = GetPrivateProfileString("Data", "COM", "none", COMnumber, Convert.ToUInt32(COMnumber.Capacity), iniFileName);
 
             //これだとiniの中身を読んでもらえません
             //設定データを読むやつ、初心者にはどの方法もよく分からなかった
