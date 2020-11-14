@@ -19,6 +19,16 @@ namespace PITempCS
 
         private static SerialPort myPort = null;
         private static StringBuilder COMnumber;
+        private static StringBuilder data;
+        private static StringBuilder data1;
+        private static StringBuilder data2;
+        private static StringBuilder data3;
+        private static StringBuilder data4;
+        private static StringBuilder data5;
+        private static StringBuilder data6;
+        private static StringBuilder data7;
+        private static StringBuilder data8;
+        private static StringBuilder data9;
 
         static internal void Load()
         {
@@ -68,29 +78,52 @@ namespace PITempCS
             {
                 return;
             }
-            try
-            {
-                String data;
-                String data1 = "aa" + z.ToString() + '\n';
-                String data2 = "ab" + spd.ToString() + '\n';
-                String data3 = "ac" + t.ToString() + '\n';
-                String data4 = "ad" + bc.ToString() + '\n';
-                String data5 = "ae" + mr.ToString() + '\n';
-                String data6 = "af" + er.ToString() + '\n';
-                String data7 = "ag" + bp.ToString() + '\n';
-                String data8 = "ah" + sap.ToString() + '\n';
-                String data9 = "ai" + am.ToString() + '\n';
-                data = data1 + data2 + data3 + data4 + data5 + data6 + data7+ data8 + data9;
-                //これ重たいからどうにかしないといけない
+                data1 = new StringBuilder();
+                data1.Append("aa");
+                data1.Append(z.ToString());
+                data1.Append('\n');
 
-                //! シリアルポートからテキストを送信する.
-                myPort.Write(data);
-                
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
+                data2 = new StringBuilder();
+                data2.Append("ab");
+                data2.Append(spd.ToString());
+                data2.Append('\n');
+
+                data3 = new StringBuilder();
+                data3.Append("ac");
+                data3.Append(t.ToString());
+                data3.Append('\n');
+
+                data4 = new StringBuilder();
+                data4.Append("ad");
+                data4.Append(bc.ToString());
+                data4.Append('\n');
+
+                data5 = new StringBuilder();
+                data5.Append("ae");
+                data5.Append(mr.ToString());
+                data5.Append('\n');
+
+                data6 = new StringBuilder();
+                data6.Append("af");
+                data6.Append(er.ToString());
+                data6.Append('\n');
+
+                data7 = new StringBuilder();
+                data7.Append("ag");
+                data7.Append(bp.ToString());
+                data7.Append('\n');
+
+                data8 = new StringBuilder();
+                data8.Append("ah");
+                data8.Append(sap.ToString());
+                data8.Append('\n');
+
+                data9 = new StringBuilder();
+                data9.Append("ai");
+                data9.Append(am.ToString());
+                data9.Append('\n');
+
+            writePort();
         }
 
         static internal void SetPower(int p)
@@ -155,6 +188,33 @@ namespace PITempCS
 
         }
 
+        static internal void writePort()
+        {
+            try
+            {
+                data = new StringBuilder();
+                data.Append(data1);
+                data.Append(data2);
+                data.Append(data3);
+                data.Append(data4);
+                data.Append(data5);
+                data.Append(data6);
+                data.Append(data7);
+                data.Append(data8);
+                data.Append(data9);
+
+                //! 文字連結するとなんか改行文字上手く動作してないんだけど
+
+                //! シリアルポートからテキストを送信する.
+                //! 面倒になったから速度計だけ出力する仕様にした
+                myPort.Write(data2.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                ClosePort();
+            }
+        }
         static internal void OpenPort()
         {
             try
