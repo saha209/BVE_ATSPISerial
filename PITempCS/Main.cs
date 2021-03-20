@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
+using System.IO;
 using System.IO.Ports;
 using System.Runtime.InteropServices;
 
@@ -177,14 +178,10 @@ namespace PITempCS
             int capacitySize = 256;
 
             COMnumber = new StringBuilder(capacitySize);
-            string iniFileName = AppDomain.CurrentDomain.BaseDirectory + "ATSPISerial.ini";
+            string iniFileName = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "/ATSPISerial.ini";
             uint ret = GetPrivateProfileString("Data", "COM", "none", COMnumber, Convert.ToUInt32(COMnumber.Capacity), iniFileName);
 
-            //これだとiniの中身を読んでもらえません
-            //設定データを読むやつ、初心者にはどの方法もよく分からなかった
-            //読んでます
-            //https://www.ipentec.com/document/csharp-read-ini-file-value
-            //https://qiita.com/caf2for4/items/3078375bb8e79a5771b4
+            //パスの読み取りに成功しました
 
         }
 
@@ -219,9 +216,8 @@ namespace PITempCS
         {
             try
             {
-                //myPort = new SerialPort("COM" + COMnumber.ToString(), 19200, Parity.None, 8, StopBits.One);
-                myPort = new SerialPort("COM6", 19200, Parity.None, 8, StopBits.One);
-                //とりあえず固定値入れている
+                myPort = new SerialPort("COM" + COMnumber.ToString(), 19200, Parity.None, 8, StopBits.One);
+                //やっと動くようになった
                 myPort.Open();
                 myPort.RtsEnable = true;
                 myPort.DtrEnable = true;

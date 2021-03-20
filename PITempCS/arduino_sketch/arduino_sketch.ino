@@ -11,7 +11,7 @@ const int ar[]={
 
 
 void setup() {
-  pinMode(PB10, OUTPUT); // 10番ピンを出力に使用
+  pinMode(PB10, OUTPUT);
   Serial.begin(19200);
 }
 
