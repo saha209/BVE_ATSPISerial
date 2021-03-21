@@ -1,5 +1,6 @@
-char input[5];   // 文字列格納用
+char input[10];   // 文字列格納用
 int i = 0;  // 文字数のカウンタ
+String reads;
 int speed = 0;
 int am = 0;
 
@@ -37,45 +38,14 @@ int interp1dim(const int x, const int*ar) {
 void loop() {
 
   //速度計情報を要求
-  Serial.print("ab\n");
+  //Serial.print("ab\n");
   if (Serial.available()) {
     //速度計情報を受信
-    input[i] = Serial.read();
-
-    if (input[0] == 'a') {
-      if (input[i] == '\n') {
-        if (input[1] == 'b' && i == 5) speed = (input[2] - 48) * 100 + (input[3] - 48) * 10 + (input[4] - 48);
-        if (input[1] == 'b' && i == 4) speed = (input[2] - 48) * 10 + (input[3] - 48);
-        if (input[1] == 'b' && i == 3) speed = (input[2] - 48);
-
-        analogWrite(PB10, interp1dim(speed, ar1));
-        i = 0;
-      }
-      else {
-        i++;
-      }
-    }
-  }
-
-  //電流計情報を要求
-  Serial.print("ai\n");
-  if (Serial.available()) {
-
-    //電流計情報を受信
-    input[i] = Serial.read();
-
-    if (input[0] == 'a') {
-      if (input[i] == '\n') {
-        if (input[1] == 'i' && i == 5) am = (input[2] - 48) * 100 + (input[3] - 48) * 10 + (input[4] - 48);
-        if (input[1] == 'i' && i == 4) am = (input[2] - 48) * 10 + (input[3] - 48);
-        if (input[1] == 'i' && i == 3) am = (input[2] - 48);
-
-        analogWrite(PB4, interp1dim(am, ar2));
-        i = 0;
-      }
-      else {
-        i++;
-      }
+    reads = Serial.readStringUntil('\n');
+    if (reads.substring(0, 2) == "ab") {
+      speed = atoi(reads.c_str()); //ここの変換がうまく行かない
+      analogWrite(PB10, interp1dim(speed, ar1));
+    Serial.print(reads);
     }
   }
 }

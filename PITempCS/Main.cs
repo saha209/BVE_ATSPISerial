@@ -31,6 +31,16 @@ namespace PITempCS
         private static StringBuilder data8;
         private static StringBuilder data9;
 
+        private static int z;
+        private static int spd;
+        private static int t;
+        private static int bc;
+        private static int mr;
+        private static int er;
+        private static int bp;
+        private static int sap;
+        private static int am;
+
         static internal void Load()
         {
             Openini();
@@ -66,66 +76,21 @@ namespace PITempCS
         }
         static unsafe internal void Elapse(State st, int* Pa, int* Sa)
         {
-            int z = (int)st.Z;
-            int spd = (int)st.V;
-            int t = st.T;
-            int bc = (int)st.BC;
-            int mr = (int)st.MR;
-            int er = (int)st.ER;
-            int bp = (int)st.BP;
-            int sap = (int)st.SAP;
-            int am = (int)st.I;
+            z = (int)st.Z;
+            spd = (int)st.V;
+            t = st.T;
+            bc = (int)st.BC;
+            mr = (int)st.MR;
+            er = (int)st.ER;
+            bp = (int)st.BP;
+            sap = (int)st.SAP;
+            am = (int)st.I;
+
             if (myPort == null)
             {
                 return;
             }
-
-
-            data1 = new StringBuilder();
-            data1.Append("aa");
-            data1.Append(z.ToString());
-            data1.Append('\n');
-
-            data2 = new StringBuilder();
-            data2.Append("ab");
-            data2.Append(spd.ToString());
-            data2.Append('\n');
-
-            data3 = new StringBuilder();
-            data3.Append("ac");
-            data3.Append(t.ToString());
-            data3.Append('\n');
-
-            data4 = new StringBuilder();
-            data4.Append("ad");
-            data4.Append(bc.ToString());
-            data4.Append('\n');
-
-            data5 = new StringBuilder();
-            data5.Append("ae");
-            data5.Append(mr.ToString());
-            data5.Append('\n');
-
-            data6 = new StringBuilder();
-            data6.Append("af");
-            data6.Append(er.ToString());
-            data6.Append('\n');
-
-            data7 = new StringBuilder();
-            data7.Append("ag");
-            data7.Append(bp.ToString());
-            data7.Append('\n');
-
-            data8 = new StringBuilder();
-            data8.Append("ah");
-            data8.Append(sap.ToString());
-            data8.Append('\n');
-
-            data9 = new StringBuilder();
-            data9.Append("ai");
-            data9.Append(am.ToString());
-            data9.Append('\n');
-
+            
             writePort();
         }
 
@@ -195,6 +160,11 @@ namespace PITempCS
                 string readdata = myPort.ReadTo("\n");
                 if (readdata == "aa")
                 {
+                    data1 = new StringBuilder();
+                    data1.Append("aa");
+                    data1.Append(z.ToString());
+                    data1.Append('\n');
+
                     try
                     {
                         myPort.Write(data1.ToString());
@@ -207,6 +177,11 @@ namespace PITempCS
                 }
                 if (readdata == "ab")
                 {
+                    data2 = new StringBuilder();
+                    data2.Append("ab");
+                    data2.Append(spd.ToString());
+                    data2.Append('\n');
+
                     try
                     {
                         myPort.Write(data2.ToString());
@@ -219,6 +194,11 @@ namespace PITempCS
                 }
                 if (readdata == "ac")
                 {
+                    data3 = new StringBuilder();
+                    data3.Append("ac");
+                    data3.Append(t.ToString());
+                    data3.Append('\n');
+
                     try
                     {
                         myPort.Write(data3.ToString());
@@ -231,6 +211,11 @@ namespace PITempCS
                 }
                 if (readdata == "ad")
                 {
+                    data4 = new StringBuilder();
+                    data4.Append("ad");
+                    data4.Append(bc.ToString());
+                    data4.Append('\n');
+
                     try
                     {
                         myPort.Write(data4.ToString());
@@ -243,6 +228,11 @@ namespace PITempCS
                 }
                 if (readdata == "ae")
                 {
+                    data5 = new StringBuilder();
+                    data5.Append("ae");
+                    data5.Append(mr.ToString());
+                    data5.Append('\n');
+
                     try
                     {
                         myPort.Write(data5.ToString());
@@ -255,6 +245,11 @@ namespace PITempCS
                 }
                 if (readdata == "af")
                 {
+                    data6 = new StringBuilder();
+                    data6.Append("af");
+                    data6.Append(er.ToString());
+                    data6.Append('\n');
+
                     try
                     {
                         myPort.Write(data6.ToString());
@@ -267,6 +262,11 @@ namespace PITempCS
                 }
                 if (readdata == "ag")
                 {
+                    data7 = new StringBuilder();
+                    data7.Append("ag");
+                    data7.Append(bp.ToString());
+                    data7.Append('\n');
+
                     try
                     {
                         myPort.Write(data7.ToString());
@@ -279,6 +279,11 @@ namespace PITempCS
                 }
                 if (readdata == "ah")
                 {
+                    data8 = new StringBuilder();
+                    data8.Append("ah");
+                    data8.Append(sap.ToString());
+                    data8.Append('\n');
+
                     try
                     {
                         myPort.Write(data8.ToString());
@@ -291,6 +296,11 @@ namespace PITempCS
                 }
                 if (readdata == "ai")
                 {
+                    data9 = new StringBuilder();
+                    data9.Append("ai");
+                    data9.Append(am.ToString());
+                    data9.Append('\n');
+
                     try
                     {
                         myPort.Write(data9.ToString());
