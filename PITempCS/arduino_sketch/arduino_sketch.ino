@@ -38,16 +38,30 @@ int interp1dim(const int x, const int*ar) {
 void loop() {
 
   //速度計情報を要求
-  //Serial.print("ab\n");
+  Serial.print("ab\n");
   if (Serial.available()) {
     //速度計情報を受信
     reads = Serial.readStringUntil('\n');
     if (reads.substring(0, 2) == "ab") {
-      speed = atoi(reads.c_str()); //ここの変換がうまく行かない
+      reads = reads.substring(2);
+      speed = reads.toInt(); 
       analogWrite(PB10, interp1dim(speed, ar1));
-    Serial.print(reads);
     }
   }
+
+  //電流計情報を要求
+  Serial.print("ai\n");
+  if (Serial.available()) {
+    //速度計情報を受信
+    reads = Serial.readStringUntil('\n');
+    if (reads.substring(0, 2) == "ai") {
+      reads = reads.substring(2);
+      am = reads.toInt(); 
+      analogWrite(PB4, interp1dim(am, ar1));
+    }
+  }
+
+  
 }
 
 //ソースは第一閉塞進行様のホームページより改変
