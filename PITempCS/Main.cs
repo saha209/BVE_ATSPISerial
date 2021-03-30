@@ -7,7 +7,6 @@ using System.IO;
 using System.IO.Ports;
 using System.Runtime.InteropServices;
 
-
 namespace PITempCS
 {
 
@@ -40,6 +39,7 @@ namespace PITempCS
         private static int bp;
         private static int sap;
         private static int am;
+        
 
         static internal void Load()
         {
@@ -51,6 +51,8 @@ namespace PITempCS
                 try
                 {
                     myPort.Write(new byte[] { 0 }, 0, 1);
+
+                    
                 }
                 catch (Exception ex)
                 {
@@ -90,8 +92,10 @@ namespace PITempCS
             {
                 return;
             }
-            
+
+
             writePort();
+
         }
 
         static internal void SetPower(int p)
@@ -152,12 +156,15 @@ namespace PITempCS
 
         }
 
+        
+
         static internal void writePort()
         {
             try
             {
                 //! 受信データを読み込む.
                 string readdata = myPort.ReadTo("\n");
+
                 if (readdata == "aa")
                 {
                     data1 = new StringBuilder();
@@ -320,6 +327,9 @@ namespace PITempCS
 
 
         }
+
+
+
         static internal void OpenPort()
         {
             try

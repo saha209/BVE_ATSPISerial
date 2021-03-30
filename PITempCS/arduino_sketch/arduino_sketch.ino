@@ -37,31 +37,52 @@ int interp1dim(const int x, const int*ar) {
 
 void loop() {
 
+  //位置情報を要求
+  Serial.print("aa\n");
+
   //速度計情報を要求
   Serial.print("ab\n");
   if (Serial.available()) {
-    //速度計情報を受信
     reads = Serial.readStringUntil('\n');
+    //速度計情報を受信
     if (reads.substring(0, 2) == "ab") {
       reads = reads.substring(2);
-      speed = reads.toInt(); 
+      speed = reads.toInt();
       analogWrite(PB10, interp1dim(speed, ar1));
     }
   }
 
+  //時刻情報を要求
+  Serial.print("ac\n");
+
+  //BC圧情報を要求
+  Serial.print("ad\n");
+
+  //MR圧情報を要求
+  Serial.print("ae\n");
+
+  //ER圧情報を要求
+  Serial.print("af\n");
+
+  //BP圧情報を要求
+  Serial.print("ag\n");
+
+  //SAP圧情報を要求
+  Serial.print("ah\n");
+
   //電流計情報を要求
   Serial.print("ai\n");
   if (Serial.available()) {
-    //速度計情報を受信
     reads = Serial.readStringUntil('\n');
+    //電流計情報を受信
     if (reads.substring(0, 2) == "ai") {
       reads = reads.substring(2);
-      am = reads.toInt(); 
+      am = reads.toInt();
       analogWrite(PB4, interp1dim(am, ar1));
     }
   }
 
-  
+
 }
 
 //ソースは第一閉塞進行様のホームページより改変
