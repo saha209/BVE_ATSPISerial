@@ -3,6 +3,7 @@ int i = 0;  // 文字数のカウンタ
 String reads;
 int speed = 0;
 int am = 0;
+int door = 0;
 
 #define INTERP(xi,xi1,yi,yi1,x) (yi + ((( yi1 - yi ) * ( x - xi )) / ( xi1 - xi )))
 
@@ -17,6 +18,7 @@ const int ar2[] = {
 };
 
 void setup() {
+  pinMode(PA0, OUTPUT);
   pinMode(PB4, OUTPUT);
   pinMode(PB10, OUTPUT);
   Serial.begin(19200);
@@ -82,7 +84,21 @@ void loop() {
     }
   }
 
-
+  //ドア情報を要求
+  Serial.print("bb\n");
+  if (Serial.available()) {
+    reads = Serial.readStringUntil('\n');
+    //電流計情報を受信
+    if (reads.substring(0, 2) == "bb") {
+      reads = reads.substring(2);
+      door = reads.toInt();
+      if (door != 0) {
+        digitalWrite(PA0, HIGH);
+      } else {
+        digitalWrite(PA0, LOW);
+      }
+    }
+  }
 }
 
 //ソースは第一閉塞進行様のホームページより改変
