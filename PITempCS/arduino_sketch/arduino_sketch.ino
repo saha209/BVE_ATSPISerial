@@ -44,15 +44,6 @@ void loop() {
 
   //速度計情報を要求
   Serial.print("ab\n");
-  if (Serial.available()) {
-    reads = Serial.readStringUntil('\n');
-    //速度計情報を受信
-    if (reads.substring(0, 2) == "ab") {
-      reads = reads.substring(2);
-      speed = reads.toInt();
-      analogWrite(PB10, interp1dim(speed, ar1));
-    }
-  }
 
   //時刻情報を要求
   Serial.print("ac\n");
@@ -74,21 +65,34 @@ void loop() {
 
   //電流計情報を要求
   Serial.print("ai\n");
+  
+  //ドア情報を要求
+  Serial.print("bb\n");
+
+
+
+  
   if (Serial.available()) {
     reads = Serial.readStringUntil('\n');
+    
+    //速度計情報を受信
+    if (reads.substring(0, 2) == "ab") {
+      reads = reads.substring(2);
+      speed = reads.toInt();
+      analogWrite(PB10, interp1dim(speed, ar1));
+    }
+    
     //電流計情報を受信
     if (reads.substring(0, 2) == "ai") {
       reads = reads.substring(2);
       am = reads.toInt();
+      if (am <= 0) {
+        am = am * -1;
+      }
       analogWrite(PB4, interp1dim(am, ar1));
     }
-  }
 
-  //ドア情報を要求
-  Serial.print("bb\n");
-  if (Serial.available()) {
-    reads = Serial.readStringUntil('\n');
-    //電流計情報を受信
+    //ドア情報を受信
     if (reads.substring(0, 2) == "bb") {
       reads = reads.substring(2);
       door = reads.toInt();
@@ -98,7 +102,9 @@ void loop() {
         digitalWrite(PA0, LOW);
       }
     }
+    
   }
+  
 }
 
 //ソースは第一閉塞進行様のホームページより改変
