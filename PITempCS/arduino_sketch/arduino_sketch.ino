@@ -70,7 +70,6 @@ void loop() {
   Serial.print("bb\n");
 
 
-
   
   if (Serial.available()) {
     reads = Serial.readStringUntil('\n');

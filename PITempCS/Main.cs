@@ -6,6 +6,7 @@ using System.Reflection;
 using System.IO;
 using System.IO.Ports;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace PITempCS
 {
@@ -45,6 +46,8 @@ namespace PITempCS
         private static int dooropn;
         private static int doorcls;
 
+        private static bool IsDisposing = true;
+
         static internal void Load()
         {
             Openini();
@@ -62,6 +65,14 @@ namespace PITempCS
                 {
                     MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
+
+                Thread thread = new Thread(new ThreadStart(() => {
+                    while (!IsDisposing)
+                    {
+                        writePort();
+                    }
+                }));
+                thread.Start();
             }
         }
 
@@ -97,8 +108,7 @@ namespace PITempCS
                 return;
             }
 
-
-            writePort();
+            
 
         }
 
@@ -159,8 +169,7 @@ namespace PITempCS
             COMnumber = new StringBuilder(capacitySize);
             string iniFileName = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "/ATSPISerial.ini";
             uint ret = GetPrivateProfileString("Data", "COM", "none", COMnumber, Convert.ToUInt32(COMnumber.Capacity), iniFileName);
-
-            //パスの読み取りに成功しました
+            
 
         }
 
@@ -171,199 +180,201 @@ namespace PITempCS
             try
             {
                 //! 受信データを読み込む.
-                string readdata = myPort.ReadTo("\n");
-
-                if (readdata == "aa")
+                if (myPort.BytesToRead > 0)
                 {
-                    data1 = new StringBuilder();
-                    data1.Append("aa");
-                    data1.Append(z.ToString());
-                    data1.Append('\n');
+                    string readdata = myPort.ReadTo("\n");
 
-                    try
+                    if (readdata == "aa")
                     {
-                        myPort.Write(data1.ToString());
+                        data1 = new StringBuilder();
+                        data1.Append("aa");
+                        data1.Append(z.ToString());
+                        data1.Append('\n');
+
+                        try
+                        {
+                            myPort.Write(data1.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            ClosePort();
+                        }
                     }
-                    catch (Exception ex)
+                    if (readdata == "ab")
                     {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
+                        data2 = new StringBuilder();
+                        data2.Append("ab");
+                        data2.Append(spd.ToString());
+                        data2.Append('\n');
+
+                        try
+                        {
+                            myPort.Write(data2.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            ClosePort();
+                        }
+                    }
+                    if (readdata == "ac")
+                    {
+                        data3 = new StringBuilder();
+                        data3.Append("ac");
+                        data3.Append(t.ToString());
+                        data3.Append('\n');
+
+                        try
+                        {
+                            myPort.Write(data3.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            ClosePort();
+                        }
+                    }
+                    if (readdata == "ad")
+                    {
+                        data4 = new StringBuilder();
+                        data4.Append("ad");
+                        data4.Append(bc.ToString());
+                        data4.Append('\n');
+
+                        try
+                        {
+                            myPort.Write(data4.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            ClosePort();
+                        }
+                    }
+                    if (readdata == "ae")
+                    {
+                        data5 = new StringBuilder();
+                        data5.Append("ae");
+                        data5.Append(mr.ToString());
+                        data5.Append('\n');
+
+                        try
+                        {
+                            myPort.Write(data5.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            ClosePort();
+                        }
+                    }
+                    if (readdata == "af")
+                    {
+                        data6 = new StringBuilder();
+                        data6.Append("af");
+                        data6.Append(er.ToString());
+                        data6.Append('\n');
+
+                        try
+                        {
+                            myPort.Write(data6.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            ClosePort();
+                        }
+                    }
+                    if (readdata == "ag")
+                    {
+                        data7 = new StringBuilder();
+                        data7.Append("ag");
+                        data7.Append(bp.ToString());
+                        data7.Append('\n');
+
+                        try
+                        {
+                            myPort.Write(data7.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            ClosePort();
+                        }
+                    }
+                    if (readdata == "ah")
+                    {
+                        data8 = new StringBuilder();
+                        data8.Append("ah");
+                        data8.Append(sap.ToString());
+                        data8.Append('\n');
+
+                        try
+                        {
+                            myPort.Write(data8.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            ClosePort();
+                        }
+                    }
+                    if (readdata == "ai")
+                    {
+                        data9 = new StringBuilder();
+                        data9.Append("ai");
+                        data9.Append(am.ToString());
+                        data9.Append('\n');
+
+                        try
+                        {
+                            myPort.Write(data9.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            ClosePort();
+                        }
+                    }
+
+                    //ドア状態
+
+                    if (readdata == "ba")
+                    {
+                        data10 = new StringBuilder();
+                        data10.Append("ba");
+                        data10.Append(dooropn.ToString());
+                        data10.Append('\n');
+
+                        try
+                        {
+                            myPort.Write(data10.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            ClosePort();
+                        }
+                    }
+                    if (readdata == "bb")
+                    {
+                        data11 = new StringBuilder();
+                        data11.Append("bb");
+                        data11.Append(doorcls.ToString());
+                        data11.Append('\n');
+
+                        try
+                        {
+                            myPort.Write(data11.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            ClosePort();
+                        }
                     }
                 }
-                if (readdata == "ab")
-                {
-                    data2 = new StringBuilder();
-                    data2.Append("ab");
-                    data2.Append(spd.ToString());
-                    data2.Append('\n');
-
-                    try
-                    {
-                        myPort.Write(data2.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-                if (readdata == "ac")
-                {
-                    data3 = new StringBuilder();
-                    data3.Append("ac");
-                    data3.Append(t.ToString());
-                    data3.Append('\n');
-
-                    try
-                    {
-                        myPort.Write(data3.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-                if (readdata == "ad")
-                {
-                    data4 = new StringBuilder();
-                    data4.Append("ad");
-                    data4.Append(bc.ToString());
-                    data4.Append('\n');
-
-                    try
-                    {
-                        myPort.Write(data4.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-                if (readdata == "ae")
-                {
-                    data5 = new StringBuilder();
-                    data5.Append("ae");
-                    data5.Append(mr.ToString());
-                    data5.Append('\n');
-
-                    try
-                    {
-                        myPort.Write(data5.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-                if (readdata == "af")
-                {
-                    data6 = new StringBuilder();
-                    data6.Append("af");
-                    data6.Append(er.ToString());
-                    data6.Append('\n');
-
-                    try
-                    {
-                        myPort.Write(data6.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-                if (readdata == "ag")
-                {
-                    data7 = new StringBuilder();
-                    data7.Append("ag");
-                    data7.Append(bp.ToString());
-                    data7.Append('\n');
-
-                    try
-                    {
-                        myPort.Write(data7.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-                if (readdata == "ah")
-                {
-                    data8 = new StringBuilder();
-                    data8.Append("ah");
-                    data8.Append(sap.ToString());
-                    data8.Append('\n');
-
-                    try
-                    {
-                        myPort.Write(data8.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-                if (readdata == "ai")
-                {
-                    data9 = new StringBuilder();
-                    data9.Append("ai");
-                    data9.Append(am.ToString());
-                    data9.Append('\n');
-
-                    try
-                    {
-                        myPort.Write(data9.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-
-                //ドア状態
-
-                if (readdata == "ba")
-                {
-                    data10 = new StringBuilder();
-                    data10.Append("ba");
-                    data10.Append(dooropn.ToString());
-                    data10.Append('\n');
-
-                    try
-                    {
-                        myPort.Write(data10.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-                if (readdata == "bb")
-                {
-                    data11 = new StringBuilder();
-                    data11.Append("bb");
-                    data11.Append(doorcls.ToString());
-                    data11.Append('\n');
-
-                    try
-                    {
-                        myPort.Write(data11.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        ClosePort();
-                    }
-                }
-
             }
             catch (Exception ex)
             {
@@ -380,10 +391,10 @@ namespace PITempCS
             try
             {
                 myPort = new SerialPort("COM" + COMnumber.ToString(), 19200, Parity.None, 8, StopBits.One);
-                //やっと動くようになった
                 myPort.Open();
                 myPort.RtsEnable = true;
                 myPort.DtrEnable = true;
+                IsDisposing = false;
             }
             catch (Exception ex)
             {
@@ -407,6 +418,7 @@ namespace PITempCS
                 }
                 catch { }
                 myPort = null;
+                IsDisposing = true;
             }
         }
     }
