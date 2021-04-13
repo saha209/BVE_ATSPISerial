@@ -39,35 +39,14 @@ int interp1dim(const int x, const int*ar) {
 
 void loop() {
 
-  //位置情報を要求
-  Serial.print("aa\n");
-
   //速度計情報を要求
   Serial.print("ab\n");
-
-  //時刻情報を要求
-  Serial.print("ac\n");
-
-  //BC圧情報を要求
-  Serial.print("ad\n");
-
-  //MR圧情報を要求
-  Serial.print("ae\n");
-
-  //ER圧情報を要求
-  Serial.print("af\n");
-
-  //BP圧情報を要求
-  Serial.print("ag\n");
-
-  //SAP圧情報を要求
-  Serial.print("ah\n");
-
+  
   //電流計情報を要求
   Serial.print("ai\n");
   
   //ドア情報を要求
-  Serial.print("bb\n");
+  Serial.print("aj\n");
 
 
   
@@ -92,7 +71,7 @@ void loop() {
     }
 
     //ドア情報を受信
-    if (reads.substring(0, 2) == "bb") {
+    if (reads.substring(0, 2) == "aj") {
       reads = reads.substring(2);
       door = reads.toInt();
       if (door != 0) {

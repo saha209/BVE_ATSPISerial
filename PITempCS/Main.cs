@@ -42,8 +42,7 @@ namespace PITempCS
         private static int bp;
         private static int sap;
         private static int am;
-
-        private static int dooropn;
+        
         private static int doorcls;
 
         private static bool IsDisposing = true;
@@ -138,14 +137,12 @@ namespace PITempCS
 
         static internal void DoorOpen()
         {
-            dooropn = 1;
             doorcls = 0;
 
         }
         static internal void DoorClose()
         {
-
-            dooropn = 0;
+            
             doorcls = 1;
         }
         static internal void HornBlow(int h)
@@ -339,34 +336,17 @@ namespace PITempCS
                     }
 
                     //ドア状態
-
-                    if (readdata == "ba")
+                    
+                    if (readdata == "aj")
                     {
                         data10 = new StringBuilder();
-                        data10.Append("ba");
-                        data10.Append(dooropn.ToString());
+                        data10.Append("aj");
+                        data10.Append(doorcls.ToString());
                         data10.Append('\n');
 
                         try
                         {
                             myPort.Write(data10.ToString());
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.Message, "ATSPISerial", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                            ClosePort();
-                        }
-                    }
-                    if (readdata == "bb")
-                    {
-                        data11 = new StringBuilder();
-                        data11.Append("bb");
-                        data11.Append(doorcls.ToString());
-                        data11.Append('\n');
-
-                        try
-                        {
-                            myPort.Write(data11.ToString());
                         }
                         catch (Exception ex)
                         {
