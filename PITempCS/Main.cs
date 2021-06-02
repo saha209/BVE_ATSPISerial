@@ -33,15 +33,15 @@ namespace PITempCS
         private static StringBuilder data10;
         private static StringBuilder data11;
 
-        private static int z;
-        private static int spd;
+        private static double z;
+        private static float spd;
         private static int t;
-        private static int bc;
-        private static int mr;
-        private static int er;
-        private static int bp;
-        private static int sap;
-        private static int am;
+        private static float bc;
+        private static float mr;
+        private static float er;
+        private static float bp;
+        private static float sap;
+        private static float am;
         
         private static int doorcls;
 
@@ -92,15 +92,15 @@ namespace PITempCS
         }
         static unsafe internal void Elapse(State st, int* Pa, int* Sa)
         {
-            z = (int)st.Z;
-            spd = (int)st.V;
+            z = st.Z;
+            spd = st.V;
             t = st.T;
-            bc = (int)st.BC;
-            mr = (int)st.MR;
-            er = (int)st.ER;
-            bp = (int)st.BP;
-            sap = (int)st.SAP;
-            am = (int)st.I;
+            bc = st.BC;
+            mr = st.MR;
+            er = st.ER;
+            bp = st.BP;
+            sap = st.SAP;
+            am = st.I;
 
             if (myPort == null)
             {
